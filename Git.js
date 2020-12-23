@@ -4,6 +4,7 @@ var added = false;
 var workingDirectory = "./"
 
 var termObj = $('#terminal').terminal({
+    mkdir: (args) => {mkdir(args)},
     pwd: () => {termObj.echo(workingDirectory)},
     ls: () => {ls()},
     cd: () => {cd()},
@@ -21,6 +22,14 @@ var termObj = $('#terminal').terminal({
     
 }, {checkArity: false, greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\tfile [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \"Your message here\"\n\t\t\tgit push"});
 
+function mkdir(name) {
+    if (name === undefined) {
+        termObj.echo('Please specify directory name');
+        return;
+    }
+    let updatedDirectory = workingDirectory + name;
+    termObj.echo(updatedDirectory);
+}
 function cd() {
     return 0
 }
