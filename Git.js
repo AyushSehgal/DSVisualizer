@@ -1,8 +1,13 @@
+var files = [];
+var committed = false;
+var added = false;
+var workingDirectory = "./"
+
 var termObj = $('#terminal').terminal({
-    pwd: () => {termObj.echo('./')},
+    pwd: () => {termObj.echo(workingDirectory)},
     ls: () => {ls()},
     cd: () => {cd()},
-    touch: ()=> {touch()},
+    touch: (args)=> {touch(args)},
     git: (command, args) => {
         switch(command) {
             case "add":
@@ -14,20 +19,21 @@ var termObj = $('#terminal').terminal({
         }
     }
     
-}, {checkArity: false, greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\tfile [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \" Your message here\"\n\t\t\tgit push"});
-
-var fileID = 0;
-var committed = false;
-var added = false;
+}, {checkArity: false, greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\tfile [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \"Your message here\"\n\t\t\tgit push"});
 
 function cd() {
     return 0
 }
 function ls() {
-    return 0
+    files.forEach((label) => {termObj.echo(label)});
 }
-function touch() {
-    return 0
+function touch(name) {
+    if (name === undefined) {
+        termObj.echo('Please specify filename and extension');
+        return;
+    }
+    let fileName = name;
+    files.push(fileName);
 }
 
 function git_add(args) {
@@ -36,8 +42,7 @@ function git_add(args) {
         return;
     }
 
-    $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + args + '</figcaption><img src="./images/file.png" id="' + fileID + '" width="40" height="40"/></figure></div>'))
-    fileID++
+    $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + args + '</figcaption><img src="./images/file.png" width="40" height="40"/></figure></div>'))
     added = true;
 }
 
