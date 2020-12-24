@@ -1,4 +1,5 @@
 var files = [];
+var directories = [""];
 var committed = false;
 var added = false;
 var workingDirectory = "./"
@@ -7,7 +8,7 @@ var termObj = $('#terminal').terminal({
     mkdir: (args) => {mkdir(args)},
     pwd: () => {termObj.echo(workingDirectory)},
     ls: () => {ls()},
-    cd: () => {cd()},
+    cd: (args) => {cd(args)},
     touch: (args)=> {touch(args)},
     git: (command, args) => {
         switch(command) {
@@ -27,11 +28,35 @@ function mkdir(name) {
         termObj.echo('Please specify directory name');
         return;
     }
+    
     let updatedDirectory = workingDirectory + name;
+    directories.push(name);
+    console.log(directories)
     termObj.echo(updatedDirectory);
 }
-function cd() {
-    return 0
+function cd(name) {
+    if (name === ".." || name === "./.." || name === "/..") {
+        let currDirectory = directories[directories.length - 1];
+        workingDirectory = workingDirectory.replace(currDirectory, '');
+        termObj.echo(workingDirectory);
+        return;
+    }
+    if (name === ".") {
+        termObj.echo(workingDirectory);
+        return;
+    }
+    if (name === undefined) {
+        workingDirectory = "./"
+        termObj.echo(workingDirectory);
+        return;
+    }
+    if (directories.includes(name)) {
+        workingDirectory += name;
+        termObj.echo(workingDirectory);
+    } else {
+        termObj.echo('Requested Directory does not exist');
+    }
+
 }
 function ls() {
     files.forEach((label) => {termObj.echo(label)});
