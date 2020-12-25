@@ -70,7 +70,9 @@ function cd(name) {
 
 }
 function ls() {
+    directories.shift()
     files.forEach((label) => {termObj.echo(label)});
+    directories.forEach((label) => {termObj.echo(label)});
 }
 function touch(name) {
     if (name === undefined) {
@@ -79,6 +81,7 @@ function touch(name) {
     }
     let fileName = name;
     files.push(fileName);
+    console.log(files)
 }
 
 function git_add(args) {
