@@ -1,3 +1,4 @@
+/** Static Variables */
 var files = [];
 var directories = [""];
 var relationships = {home: []};
@@ -6,6 +7,7 @@ var added = false;
 var workingDirectory = "./"
 var currentDirectory = "home"
 
+/** Instantiate JQuery Terminal */
 var termObj = $('#terminal').terminal({
     mkdir: (args) => {mkdir(args)},
     pwd: () => {termObj.echo(workingDirectory)},
@@ -25,6 +27,7 @@ var termObj = $('#terminal').terminal({
     
 }, {checkArity: false, greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\ttouch [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \"Your message here\"\n\t\t\tgit push"});
 
+/** Functional Elements - Basic Terminal Commands */
 function mkdir(name) {
     if (name === undefined) {
         termObj.echo('Please specify directory name');
@@ -95,6 +98,7 @@ function touch(name) {
     
 }
 
+/** Functional Elements - Git Commands */
 function git_add(args) {
     if (args === undefined) {
         termObj.echo('Please specify a file or multiple files to stage.')
