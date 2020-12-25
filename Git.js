@@ -2,8 +2,7 @@
 var files = [];
 var directories = [""];
 var relationships = {home: []};
-var committed = false;
-var added = false;
+
 var workingDirectory = "./"
 var currentDirectory = "home"
 
@@ -99,19 +98,44 @@ function touch(name) {
 }
 
 /** Functional Elements - Git Commands */
+var committed = false;
+var added = false;
+var closedAdd = [];
+
 function git_add(args) {
     if (args === undefined) {
         termObj.echo('Please specify a file or multiple files to stage.')
         return;
     }
+    if (closedAdd.includes(args)) {
+        termObj.echo('This file/folder is already staged. Now please commit')
+        return;
+    }
+
+    if (args == ".") {
+        if (files.length == 0) {
+            termObj.echo('No files exist, please create them using the touch command.')
+            return;
+        }
+        files.forEach((item) => { $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + item + '</figcaption><img src="./images/file.png" width="40" height="40"/></figure></div>'))})
+        closedAdd.push(args);
+        return;
+    }
+
+    if (!files.includes(args) && !directories.includes(args)) {
+        termObj.echo('The file specified does not exist.')
+        return;
+    }
+    
     $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + args + '</figcaption><img src="./images/file.png" width="40" height="40"/></figure></div>'))
     added = true;
+    closedAdd.push(args);
 }
 
 
 function git_commit() {
     if (added && !committed) {
-        $('#commit').append($('<div class="col"><figure><figcaption style="font-size:12px">Img:' + added + '</figcaption><img src="./images/folder.png" width="40" height="40"/></figure></div>'))
+        $('#commit').append($('<div class="col"><figure><figcaption style="font-size:12px">Caption Goes Here</figcaption><img src="./images/folder.png" width="40" height="40"/></figure></div>'))
         committed = true;
     } else if (committed) {
         termObj.echo('Nothing to commit')
