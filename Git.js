@@ -1,8 +1,10 @@
 var files = [];
 var directories = [""];
+var relationships = {};
 var committed = false;
 var added = false;
 var workingDirectory = "./"
+var currentDirectory = "./"
 
 var termObj = $('#terminal').terminal({
     mkdir: (args) => {mkdir(args)},
@@ -21,7 +23,7 @@ var termObj = $('#terminal').terminal({
         }
     }
     
-}, {checkArity: false, greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\tfile [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \"Your message here\"\n\t\t\tgit push"});
+}, {checkArity: false, greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\ttouch [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \"Your message here\"\n\t\t\tgit push"});
 
 function mkdir(name) {
     if (name === undefined) {
@@ -32,10 +34,12 @@ function mkdir(name) {
     if (workingDirectory === "./") {
         updatedDirectory = workingDirectory + name; 
     } else {
+        let currDirectory = directories[directories.length - 1];
+        relationships[currDirectory].push(name);
         updatedDirectory = workingDirectory + "/" + name;
     }
     directories.push(name);
-    console.log(directories)
+    relationships[name] = [];
     termObj.echo(updatedDirectory);
     
 }
@@ -62,6 +66,7 @@ function cd(name) {
         if (workingDirectory != "./") {
             name = "/" + name;
         } 
+        currentDirectory = name;
         workingDirectory += name;
         termObj.echo(workingDirectory);
     } else {
@@ -70,18 +75,23 @@ function cd(name) {
 
 }
 function ls() {
-    directories.shift()
-    files.forEach((label) => {termObj.echo(label)});
-    directories.forEach((label) => {termObj.echo(label)});
+    // directories.shift()
+    // files.forEach((label) => {termObj.echo(label)});
+    // directories.forEach((label) => {termObj.echo(label)});
+    console.log(currentDirectory)
+    relationships[currentDirectory].forEach((label) => {termObj.echo(label)});
+
+
 }
 function touch(name) {
     if (name === undefined) {
         termObj.echo('Please specify filename and extension');
         return;
     }
-    let fileName = name;
-    files.push(fileName);
+    relationships[currentDirectory].push(name);
+    files.push(name);
     console.log(files)
+    
 }
 
 function git_add(args) {
