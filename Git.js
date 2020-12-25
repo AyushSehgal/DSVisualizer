@@ -1,10 +1,10 @@
 var files = [];
 var directories = [""];
-var relationships = {};
+var relationships = {home: []};
 var committed = false;
 var added = false;
 var workingDirectory = "./"
-var currentDirectory = "./"
+var currentDirectory = "home"
 
 var termObj = $('#terminal').terminal({
     mkdir: (args) => {mkdir(args)},
@@ -66,6 +66,9 @@ function cd(name) {
         if (workingDirectory != "./") {
             name = "/" + name;
         } 
+        if (currentDirectory === name) {
+            termObj.echo(workingDirectory)
+        }
         currentDirectory = name;
         workingDirectory += name;
         termObj.echo(workingDirectory);
@@ -78,7 +81,6 @@ function ls() {
     // directories.shift()
     // files.forEach((label) => {termObj.echo(label)});
     // directories.forEach((label) => {termObj.echo(label)});
-    console.log(currentDirectory)
     relationships[currentDirectory].forEach((label) => {termObj.echo(label)});
 
 
@@ -90,7 +92,6 @@ function touch(name) {
     }
     relationships[currentDirectory].push(name);
     files.push(name);
-    console.log(files)
     
 }
 
@@ -99,7 +100,6 @@ function git_add(args) {
         termObj.echo('Please specify a file or multiple files to stage.')
         return;
     }
-
     $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + args + '</figcaption><img src="./images/file.png" width="40" height="40"/></figure></div>'))
     added = true;
 }
