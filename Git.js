@@ -21,6 +21,9 @@ var termObj = $('#terminal').terminal({
             case "commit":
                 git_commit(args)
                 break;
+            case "push":
+                git_push()
+                break;
         }
     }
     
@@ -113,7 +116,7 @@ function git_add(args) {
             termObj.echo('No files exist, please create them using the touch command.')
             return;
         }
-        files.forEach((item) => { $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + item + '</figcaption><img src="./images/file.png" width="40" height="40"/></figure></div>'))})
+        files.forEach((item) => { $('#staged').append($('<div class="col"><figure><img src="./images/file.png" width="40" height="40"/><figcaption style="font-size:12px; text-align: center">' + item + '</figcaption></figure></div>'))})
         closedAdd.push(args);
         added = true;
         return;
@@ -131,7 +134,6 @@ function git_add(args) {
 
 
 function git_commit(message) {
-    console.log(message);
     if (message[0] != "-m") {
         termObj.echo("Please format your commit as follows: \n\t\tgit commit -m \"message goes here\"");
         return;
@@ -142,12 +144,19 @@ function git_commit(message) {
     }
     const mssg = message[1]
     if (added && !committed) {
-        $('#commit').append($('<div class="col"><figure><figcaption style="font-size:12px">' + mssg + '</figcaption><img src="./images/folder.png" width="40" height="40"/></figure></div>'))
+        $('#commit').append($('<div class="col"><figure><img src="./images/folder.png" width="40" height="40"/><figcaption style="font-size:12px; text-align: center">' + mssg + '</figcaption></figure></div>'))
         committed = true;
     } else if (committed) {
         termObj.echo('Nothing to commit')
     } else {
         termObj.echo('Please add before committing')
     }
+}
+
+function git_push() {
+    $('#load').append($('<img src="./images/file.png" width="40" height="40"/>'))
+    setTimeout(() => {$('#load').append($('<img src="./images/file.png" width="40" height="40"/>'))}, 500);
+    setTimeout(() => {$('#load').append($('<img src="./images/file.png" width="40" height="40"/>'))}, 1000);
+    
 }
 

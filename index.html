@@ -6,11 +6,12 @@
         <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     </head>
-    <body>
+    <body class="p-3 sm-2 bg-info">
         <div class="container">
+            <div class="row p-3 sm-2 bg-info"></div>
             <div class="row">
                 <div class="col" style="height: 100vh" id="terminal"><h1>Terminal</h1><script src="./Git.js"></script></div>
-                <div class="col" style="height: 100vh" id="visual">
+                <div class="col p-3 sm-2 bg-white" style="height: 100vh" id="visual">
                     <h1>Visual Space</h1>
                     <table style="width:100%; border-style: groove;">
                         <col width="50%" />
@@ -27,8 +28,15 @@
                             </td>
                         </tr>
                     </table>
+                    <br/>
+                    <div class="row" id="push">
+                        <div class="col"><img src="./images/desktop.png" /></div> 
+                        <div class="col" id="load"></div>
+                        <div class="col"><img src="./images/github.png" style="float: right;" width="50" height="50"/></div>
+                    </div>
                 </div>
             </div>
+            <div class="row p-3 sm-2 bg-info"></div>
         </div>
     
     </body>
