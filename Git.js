@@ -28,16 +28,24 @@ function mkdir(name) {
         termObj.echo('Please specify directory name');
         return;
     }
-    
-    let updatedDirectory = workingDirectory + name;
+    let updatedDirectory = ""
+    if (workingDirectory === "./") {
+        updatedDirectory = workingDirectory + name; 
+    } else {
+        updatedDirectory = workingDirectory + "/" + name;
+    }
     directories.push(name);
     console.log(directories)
     termObj.echo(updatedDirectory);
+    
 }
 function cd(name) {
     if (name === ".." || name === "./.." || name === "/..") {
         let currDirectory = directories[directories.length - 1];
-        workingDirectory = workingDirectory.replace(currDirectory, '');
+        workingDirectory = workingDirectory.replace('\/' + currDirectory, '');
+        if (workingDirectory === ".") {
+            workingDirectory = "./"
+        }
         termObj.echo(workingDirectory);
         return;
     }
@@ -51,6 +59,9 @@ function cd(name) {
         return;
     }
     if (directories.includes(name)) {
+        if (workingDirectory != "./") {
+            name = "/" + name;
+        } 
         workingDirectory += name;
         termObj.echo(workingDirectory);
     } else {
