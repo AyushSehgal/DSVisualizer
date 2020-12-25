@@ -13,13 +13,13 @@ var termObj = $('#terminal').terminal({
     ls: () => {ls()},
     cd: (args) => {cd(args)},
     touch: (args)=> {touch(args)},
-    git: (command, args) => {
+    git: (command, ...args) => {
         switch(command) {
             case "add":
                 git_add(args)
                 break;
             case "commit":
-                git_commit()
+                git_commit(args)
                 break;
         }
     }
@@ -80,13 +80,9 @@ function cd(name) {
 
 }
 function ls() {
-    // directories.shift()
-    // files.forEach((label) => {termObj.echo(label)});
-    // directories.forEach((label) => {termObj.echo(label)});
     relationships[currentDirectory].forEach((label) => {termObj.echo(label)});
-
-
 }
+
 function touch(name) {
     if (name === undefined) {
         termObj.echo('Please specify filename and extension');
@@ -119,6 +115,7 @@ function git_add(args) {
         }
         files.forEach((item) => { $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + item + '</figcaption><img src="./images/file.png" width="40" height="40"/></figure></div>'))})
         closedAdd.push(args);
+        added = true;
         return;
     }
 
@@ -133,14 +130,24 @@ function git_add(args) {
 }
 
 
-function git_commit() {
+function git_commit(message) {
+    console.log(message);
+    if (message[0] != "-m") {
+        termObj.echo("Please format your commit as follows: \n\t\tgit commit -m \"message goes here\"");
+        return;
+    }
+    if (message.length != 2) {
+        termObj.echo("Please format your commit as follows: \n\t\tgit commit -m \"message goes here\"");
+        return;
+    }
+    const mssg = message[1]
     if (added && !committed) {
-        $('#commit').append($('<div class="col"><figure><figcaption style="font-size:12px">Caption Goes Here</figcaption><img src="./images/folder.png" width="40" height="40"/></figure></div>'))
+        $('#commit').append($('<div class="col"><figure><figcaption style="font-size:12px">' + mssg + '</figcaption><img src="./images/folder.png" width="40" height="40"/></figure></div>'))
         committed = true;
     } else if (committed) {
         termObj.echo('Nothing to commit')
     } else {
-        termObj.echo('Please add before committing ')
+        termObj.echo('Please add before committing')
     }
 }
 
