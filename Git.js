@@ -99,6 +99,7 @@ function touch(name) {
 /** Functional Elements - Git Commands */
 var committed = false;
 var added = false;
+var pushed = false;
 var closedAdd = [];
 
 function git_add(args) {
@@ -154,9 +155,20 @@ function git_commit(message) {
 }
 
 function git_push() {
-    $('#load').append($('<img src="./images/file.png" width="40" height="40"/>'))
-    setTimeout(() => {$('#load').append($('<img src="./images/file.png" width="40" height="40"/>'))}, 500);
-    setTimeout(() => {$('#load').append($('<img src="./images/file.png" width="40" height="40"/>'))}, 1000);
-    
+    if (!committed) {
+        termObj.echo('Please commit before pushing.');
+        return;
+    }
+    if (pushed) {
+        termObj.echo('Nothing to push.');
+        return;
+    }
+    pushed = true;
+    $('#pc').append($('<img src="./images/desktop.png" />'));
+    setTimeout(() => {$('#load').append($('<img id="1" src="./images/file.png" width="40" height="40"/>'))}, 250);
+    setTimeout(() => {$('#load').append($('<img id="2" src="./images/file.png" width="40" height="40"/>'))}, 500);
+    setTimeout(() => {$('#load').append($('<img id="3" src="./images/file.png" width="40" height="40"/>'))}, 1000);
+    setTimeout(() => {$('#hub').append($('<img src="./images/github.png" style="float: right;" width="50" height="50"/>'))}, 1500);
+    setTimeout(() => {$('#load').empty()}, 2000);
 }
 
