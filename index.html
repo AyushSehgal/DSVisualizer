@@ -5,13 +5,14 @@
         <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body class="p-3 sm-2 bg-info">
         <div class="container">
             <div class="row p-3 sm-2 bg-info"></div>
             <div class="row">
-                <div class="col" style="height: 100vh" id="terminal"><h1>Terminal</h1><script src="./Git.js"></script></div>
-                <div class="col p-3 sm-2 bg-white" style="height: 100vh" id="visual">
+                <div class="col" style="height: 70vh;" id="terminal"><h1>Terminal</h1><script src="./Git.js"></script></div>
+                <div class="col p-3 sm-2 bg-white" style="height: 70vh" id="visual">
                     <h1>Visual Space</h1>
                     <table style="width:100%; border-style: groove;">
                         <col width="50%" />
@@ -36,7 +37,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row p-3 sm-2 bg-info"></div>
+            <div class="row p-3 bg-white" style="border-style: groove">
+                <h1>Branches</h1>
+                <div class="container" id="tree"></div>
+                
+            </div>
         </div>
     
     </body>

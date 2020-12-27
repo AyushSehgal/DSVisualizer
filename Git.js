@@ -24,6 +24,11 @@ var termObj = $('#terminal').terminal({
             case "push":
                 git_push()
                 break;
+            case "branch": 
+                git_branch(args)
+                break;
+            default:
+                termObj.echo('This command does not exist.');
         }
     }
     
@@ -93,47 +98,64 @@ function touch(name) {
     }
     relationships[currentDirectory].push(name);
     files.push(name);
+    console.log(relationships)
+    console.log(files)
     
 }
 
 /** Functional Elements - Git Commands */
 var committed = false;
-var added = false;
 var pushed = false;
 var closedAdd = [];
 
-function git_add(args) {
-    if (args === undefined) {
+function git_add(args) {  
+    console.log(args)
+    if (args.length == 0) {
         termObj.echo('Please specify a file or multiple files to stage.')
         return;
     }
-    if (closedAdd.includes(args)) {
-        termObj.echo('This file/folder is already staged. Now please commit')
-        return;
-    }
-
     if (args == ".") {
         if (files.length == 0) {
             termObj.echo('No files exist, please create them using the touch command.')
             return;
         }
-        files.forEach((item) => { $('#staged').append($('<div class="col"><figure><img src="./images/file.png" width="40" height="40"/><figcaption style="font-size:12px; text-align: center">' + item + '</figcaption></figure></div>'))})
-        closedAdd.push(args);
-        added = true;
+        
+        files.forEach((item) => { 
+            if (!closedAdd.includes(item)) {
+                $('#staged').append($('<div class="col"><figure><img src="./images/file.png" width="40" height="40"/><figcaption style="font-size:12px; text-align: center">' + item + '</figcaption></figure></div>'))
+                closedAdd.push(item)
+                pushed = false;
+                committed = false;
+            } else {
+                termObj.echo(item + ' is already staged. Now please commit')
+            }
+        });
         return;
     }
 
-    if (!files.includes(args) && !directories.includes(args)) {
-        termObj.echo('The file specified does not exist.')
-        return;
-    }
+    for (var i = 0; i < args.length; i++) {
+        if (args[i] === undefined) {
+            termObj.echo('Please specify a file or multiple files to stage.')
+            return;
+        }
     
-    $('#staged').append($('<div class="col"><figure><figcaption style="font-size:12px">' + args + '</figcaption><img src="./images/file.png" width="40" height="40"/></figure></div>'))
-    added = true;
-    closedAdd.push(args);
+        if (closedAdd.includes(args[i])) {
+            termObj.echo(args[i] + ' is already staged. Now please commit')
+            return;
+        }
+
+        if (!files.includes(args[i])) {
+            termObj.echo('The file specified does not exist.')
+            return;
+        }
+        $('#staged').append($('<div class="col"><figure><img src="./images/file.png" width="40" height="40"/><figcaption style="font-size:12px; text-align: center">' + args[i] + '</figcaption></figure></div>'))
+        closedAdd.push(args[i]);
+        pushed = false;
+        committed = false;
+    }   
 }
 
-
+var commitMessages = [];
 function git_commit(message) {
     if (message[0] != "-m") {
         termObj.echo("Please format your commit as follows: \n\t\tgit commit -m \"message goes here\"");
@@ -144,8 +166,9 @@ function git_commit(message) {
         return;
     }
     const mssg = message[1]
-    if (added && !committed) {
+    if (closedAdd.length != 0) {
         $('#commit').append($('<div class="col"><figure><img src="./images/folder.png" width="40" height="40"/><figcaption style="font-size:12px; text-align: center">' + mssg + '</figcaption></figure></div>'))
+        commitMessages.push(mssg);
         committed = true;
     } else if (committed) {
         termObj.echo('Nothing to commit')
@@ -167,8 +190,13 @@ function git_push() {
     $('#pc').append($('<img src="./images/desktop.png" />'));
     setTimeout(() => {$('#load').append($('<img id="1" src="./images/file.png" width="40" height="40"/>'))}, 250);
     setTimeout(() => {$('#load').append($('<img id="2" src="./images/file.png" width="40" height="40"/>'))}, 500);
-    setTimeout(() => {$('#load').append($('<img id="3" src="./images/file.png" width="40" height="40"/>'))}, 1000);
-    setTimeout(() => {$('#hub').append($('<img src="./images/github.png" style="float: right;" width="50" height="50"/>'))}, 1500);
-    setTimeout(() => {$('#load').empty()}, 2000);
+    setTimeout(() => {$('#load').append($('<img id="3" src="./images/file.png" width="40" height="40"/>'))}, 750);
+    setTimeout(() => {$('#hub').append($('<img src="./images/github.png" style="float: right;" width="50" height="50"/>'))}, 1000);
+    setTimeout(() => {$('#load').empty(); $('#tree').append($('<div class="circle"></div><p>' + commitMessages.pop() +'</p>')); $('#pc').empty(); $('#hub').empty()}, 1250);
+
+}
+
+function git_branch(name) {
+
 }
 
