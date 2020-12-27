@@ -27,6 +27,9 @@ var termObj = $('#terminal').terminal({
             case "branch": 
                 git_branch(args)
                 break;
+            case "auto":
+                git_auto()
+                break;
             default:
                 termObj.echo('This command does not exist.');
         }
@@ -109,7 +112,7 @@ var pushed = false;
 var closedAdd = [];
 
 function git_add(args) {  
-    console.log(args)
+    $('#visual').show();
     if (args.length == 0) {
         termObj.echo('Please specify a file or multiple files to stage.')
         return;
@@ -198,5 +201,12 @@ function git_push() {
 
 function git_branch(name) {
 
+}
+
+function git_auto() {
+    touch("sample.txt");
+    git_add(["sample.txt"]);
+    setTimeout(() => {git_commit(["-m", "Initial Commit"]);}, 750);
+    setTimeout(() => {git_push();}, 1500);
 }
 
