@@ -35,7 +35,11 @@ var termObj = $('#terminal').terminal({
         }
     }
     
-}, {checkArity: false, greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\ttouch [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \"Your message here\"\n\t\t\tgit push"});
+}, {
+    checkArity: false, 
+    name: 'DSVisualizer', 
+    greetings: "Welcome to Terminal! \nTips:\n\tMake your own dummy files using the file keyword\n\tExample:\n\t\t\ttouch [filename.extension]\n\t\t\tgit add [filename.extension] OR git add .\n\t\t\tgit commit -m \"Your message here\"\n\t\t\tgit push\n\tOR type \"git auto\" to do all of the above in one command"
+});
 
 /** Functional Elements - Basic Terminal Commands */
 function mkdir(name) {
@@ -195,18 +199,19 @@ function git_push() {
     setTimeout(() => {$('#load').append($('<img id="2" src="./images/file.png" width="40" height="40"/>'))}, 500);
     setTimeout(() => {$('#load').append($('<img id="3" src="./images/file.png" width="40" height="40"/>'))}, 750);
     setTimeout(() => {$('#hub').append($('<img src="./images/github.png" style="float: right;" width="50" height="50"/>'))}, 1000);
-    setTimeout(() => {$('#load').empty(); $('#tree').append($('<div class="circle"></div><p>' + commitMessages.pop() +'</p>')); $('#pc').empty(); $('#hub').empty()}, 1250);
+    setTimeout(() => {$('#load').empty(); $('#master').append($('<div class="col"><div class="circle"></div><p>' + commitMessages.pop() +'</p></div>')); $('#pc').empty(); $('#hub').empty()}, 1250);
 
 }
 
 function git_branch(name) {
-
+    
 }
 
 function git_auto() {
-    touch("sample.txt");
-    git_add(["sample.txt"]);
-    setTimeout(() => {git_commit(["-m", "Initial Commit"]);}, 750);
-    setTimeout(() => {git_push();}, 1500);
+    termObj.echo('Auto Generate Commit Process')
+    setTimeout(() => {termObj.echo('> touch sample.txt'); touch("sample.txt");}, 500);
+    setTimeout(() => {termObj.echo('> git add .'); git_add(["sample.txt"]);}, 650);
+    setTimeout(() => {termObj.echo('> git commit -m \"Initial Commit\"'); git_commit(["-m", "Initial Commit"]);}, 750);
+    setTimeout(() => {termObj.echo('> git push'); git_push();}, 1500);
 }
 
