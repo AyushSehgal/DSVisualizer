@@ -6,6 +6,7 @@ var relationships = {home: []};
 var workingDirectory = "./"
 var currentDirectory = "home"
 
+
 /** Instantiate JQuery Terminal */
 var termObj = $('#terminal').terminal({
     mkdir: (args) => {mkdir(args)},
@@ -105,8 +106,6 @@ function touch(name) {
     }
     relationships[currentDirectory].push(name);
     files.push(name);
-    console.log(relationships)
-    console.log(files)
     
 }
 
@@ -184,6 +183,11 @@ function git_commit(message) {
     }
 }
 
+function drawNode(container) {
+    var draw = SVG().addTo(container).size(300,300);
+    var node = draw.circle(50).fill('#555');
+}
+
 function git_push() {
     if (!committed) {
         termObj.echo('Please commit before pushing.');
@@ -193,17 +197,25 @@ function git_push() {
         termObj.echo('Nothing to push.');
         return;
     }
-    pushed = true;
+    
     $('#pc').append($('<img src="./images/desktop.png" />'));
     setTimeout(() => {$('#load').append($('<img id="1" src="./images/file.png" width="40" height="40"/>'))}, 250);
     setTimeout(() => {$('#load').append($('<img id="2" src="./images/file.png" width="40" height="40"/>'))}, 500);
     setTimeout(() => {$('#load').append($('<img id="3" src="./images/file.png" width="40" height="40"/>'))}, 750);
     setTimeout(() => {$('#hub').append($('<img src="./images/github.png" style="float: right;" width="50" height="50"/>'))}, 1000);
-    setTimeout(() => {$('#load').empty(); $('#master').append($('<div class="col"><div class="circle"></div><p>' + commitMessages.pop() +'</p></div>')); $('#pc').empty(); $('#hub').empty()}, 1250);
+    setTimeout(() => {
+        $('#load').empty(); 
+        // $('#master').append($('<div class="col"><div class="circle"></div><p>' + commitMessages.pop() +'</p></div>'));
+        $('#master').append($('<br />'));
+        drawNode('#master');
+        $('#pc').empty(); 
+        $('#hub').empty()
+    }, 1250);
 
 }
 
 function git_branch(name) {
+    
     
 }
 
