@@ -5,3 +5,7 @@ Visualization is the main issue for students when learning Git and version contr
 ## Tools/Packages Used
 
 HTML, CSS, Javascript, JQuery Terminal, SVG, node
+
+## Current Development
+
+Working on Git branch to get Git visualization up and running. Basic terminal bash commands are complete, so are git add, commit, push. Last phase is branching, which is being worked on now.
