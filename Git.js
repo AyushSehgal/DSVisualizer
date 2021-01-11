@@ -182,10 +182,24 @@ function git_commit(message) {
         termObj.echo('Please add before committing')
     }
 }
+var lineLength = 65;
+var nodeDiameter = 50;
+var nodeRadius = nodeDiameter / 2;
+var startLine = 0;
+var startNode = lineLength;
+var masterYNode = 0;
+var masterYLine = 25;
+var draw;
+var line;
+var circle;
 
 function drawNode(container) {
-    var draw = SVG().addTo(container).size(300,300);
-    var node = draw.circle(50).fill('#555');
+    draw = SVG().addTo(container).size(300,300);
+    line = draw.line(0, 0, lineLength, 0).move(startLine, nodeRadius).stroke({ color: '#555', width: 10, linecap: 'square' })
+    circle = draw.circle(nodeDiameter).fill('#555').move(startNode, 0);
+    
+    startLine = startLine + lineLength + nodeDiameter;
+    startNode = startNode + startLine + lineLength;
 }
 
 function git_push() {
@@ -207,6 +221,8 @@ function git_push() {
         $('#load').empty(); 
         // $('#master').append($('<div class="col"><div class="circle"></div><p>' + commitMessages.pop() +'</p></div>'));
         $('#master').append($('<br />'));
+        drawNode('#master');
+        console.log('new start value ' + newStart);
         drawNode('#master');
         $('#pc').empty(); 
         $('#hub').empty()
